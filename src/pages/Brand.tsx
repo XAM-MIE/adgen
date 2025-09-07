@@ -616,7 +616,7 @@ If a reference image is included, incorporate its elements tastefully.`;
                       <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-xs bg-black text-white dark:bg-white dark:text-black z-10">Logo</span>
                       <img src={geminiImageService.base64ToBlob(generatedBrand.images.logo.data, `image/${generatedBrand.images.logo.format || 'png'}`)} className="w-full h-48 object-contain p-4" />
                       <div className="p-2 text-right">
-                        <button onClick={() => navigate('/editor', { state: { imageData: generatedBrand.images.logo.data, format: generatedBrand.images.logo.format, mimeType: `image/${generatedBrand.images.logo.format || 'png'}` } })} className="btn-secondary text-xs px-2 py-1 inline-flex items-center"><Edit2 className="w-3 h-3 mr-1" /> Edit</button>
+                        <button onClick={() => navigate('/editor', { state: { imageData: generatedBrand.images.logo.data, format: generatedBrand.images.logo.format, mimeType: `image/${generatedBrand.images.logo.format || 'png'}`, defaultPrompt: 'Enhance the logo, improve contrast, refine edges, or describe your changes' } })} className="btn-secondary text-xs px-2 py-1 inline-flex items-center"><Edit2 className="w-3 h-3 mr-1" /> Edit</button>
                       </div>
                     </div>
                   )}

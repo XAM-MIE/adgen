@@ -160,6 +160,35 @@ export function ProjectDetailsModal({ project, isOpen, onClose }: ProjectDetails
                                   <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
                                     <div className="flex justify-end gap-2">
                                       <button
+                                        onClick={async () => {
+                                          // Convert blob URL to base64 for the editor
+                                          try {
+                                            const response = await fetch(imageUrl);
+                                            const blob = await response.blob();
+                                            const reader = new FileReader();
+                                            reader.onloadend = () => {
+                                              const base64data = reader.result as string;
+                                              const base64 = base64data.split(',')[1];
+                                              navigate('/editor', { 
+                                                state: { 
+                                                  imageData: base64,
+                                                  mimeType: blob.type,
+                                                  format: blob.type.split('/')[1] || 'png',
+                                                  defaultPrompt: 'Enhance the ad creative, adjust colors, improve composition, or describe your changes'
+                                                } 
+                                              });
+                                              onClose();
+                                            };
+                                            reader.readAsDataURL(blob);
+                                          } catch (error) {
+                                            console.error('Failed to prepare image for editing:', error);
+                                          }
+                                        }}
+                                        className="p-1.5 bg-white/90 hover:bg-white rounded text-black"
+                                      >
+                                        <Edit2 className="w-3.5 h-3.5" />
+                                      </button>
+                                      <button
                                         onClick={() => downloadImage(imageUrl, `creative-${i + 1}.png`)}
                                         className="p-1.5 bg-white/90 hover:bg-white rounded text-black"
                                       >
@@ -292,7 +321,8 @@ export function ProjectDetailsModal({ project, isOpen, onClose }: ProjectDetails
                                     state: { 
                                       imageData: data.brandKit.images.logo.data, 
                                       format: data.brandKit.images.logo.format,
-                                      mimeType: `image/${data.brandKit.images.logo.format || 'png'}` 
+                                      mimeType: `image/${data.brandKit.images.logo.format || 'png'}`,
+                                      defaultPrompt: 'Enhance the logo, improve contrast, refine edges, or describe your changes' 
                                     } 
                                   })}
                                   className="btn-secondary text-xs px-3 py-1.5 flex items-center"

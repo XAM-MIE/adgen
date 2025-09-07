@@ -17,7 +17,7 @@ export default function Editor() {
 
   // If navigated with an image, preload it as the editing target
   useEffect(() => {
-    const initial = location?.state as { imageData?: string; mimeType?: string; format?: string } | undefined;
+    const initial = location?.state as { imageData?: string; mimeType?: string; format?: string; defaultPrompt?: string } | undefined;
     if (initial?.imageData) {
       try {
         const mimeType = initial.mimeType || `image/${initial.format || 'png'}`;
@@ -29,6 +29,10 @@ export default function Editor() {
         setFile(f);
         const url = URL.createObjectURL(blob);
         setPreview(url);
+        // Set default prompt if provided
+        if (initial.defaultPrompt) {
+          setPrompt(initial.defaultPrompt);
+        }
       } catch (e) {
         console.warn('Failed to preload editor image:', e);
       }
@@ -150,7 +154,7 @@ export default function Editor() {
               )}
 
               <div className="mt-4">
-                <button onClick={runEdit} disabled={loading || !file || !prompt.trim()} className="btn-primary w-full flex items-center justify-center">
+                <button onClick={() => runEdit()} disabled={loading || !file || !prompt.trim()} className="btn-primary w-full flex items-center justify-center">
                   {loading ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>

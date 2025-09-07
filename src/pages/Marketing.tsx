@@ -350,7 +350,8 @@ Notes
           state: { 
             imageData: base64,
             mimeType: blob.type,
-            format: blob.type.split('/')[1] || 'png'
+            format: blob.type.split('/')[1] || 'png',
+            defaultPrompt: 'Enhance the ad creative, adjust colors, improve composition, or describe your changes'
           } 
         });
       };
